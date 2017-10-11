@@ -1,0 +1,9 @@
+<article>
+    {{#if isLoading}}
+        loading...
+    {{else}}
+        {{#each trips key="@index" as |trip|}}
+            <trip-item @trip={{trip}} />
+        {{/each}}
+    {{/if}}
+</article>

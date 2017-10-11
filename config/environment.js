@@ -3,7 +3,8 @@
 module.exports = function(environment) {
   let ENV = {
     modulePrefix: 'outing-glimmer',
-    environment: environment
+    environment: environment,
+    api: 'https://cn.outingtravel.com'
   };
 
   return ENV;

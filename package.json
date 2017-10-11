@@ -1,7 +1,7 @@
 {
   "name": "outing-glimmer",
-  "version": "0.0.0",
-  "description": "A brand new Glimmer app.",
+  "version": "0.0.1",
+  "description": "Testing Glimmer app for OutingTravel.",
   "directories": {
     "doc": "doc",
     "test": "tests"
