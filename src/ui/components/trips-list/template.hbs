@@ -1,9 +1,11 @@
-<article>
+<h1 class="text-center text-primary">OutingTravel</h1>
+<article class="container">
     {{#if isLoading}}
-        loading...
-    {{else}}
+    <div class="text-center text-muted">loading...</div>{{else}}
+    <p class="featured-title">Vacation Journeys</p>
+    <div class="row normal-itinetaries">
         {{#each trips key="@index" as |trip|}}
-            <trip-item @trip={{trip}} />
-        {{/each}}
+        <trip-item @trip={{trip}} /> {{/each}}
+    </div>
     {{/if}}
 </article>

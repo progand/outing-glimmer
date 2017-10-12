@@ -1,0 +1,38 @@
+.destinations-list,
+.normal-itinetaries {
+  .component-trip-card {
+    $itinerary-margin-right: 29.9px;
+    max-width: 360px;
+    margin: 0 auto;
+    @media (min-width: $screen-sm-min) {
+      width: 360px;
+      float: left;
+      margin-right: $itinerary-margin-right;
+      @media (max-width: $screen-sm-max) {
+        &:nth-child(even) {
+          margin-right: 0;
+        }
+      }
+    }
+    @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+      &:nth-child(odd) {
+        margin-left: 110px;
+      }
+    }
+    @media (min-width: $screen-lg-min) {
+      margin-right: $itinerary-margin-right;
+      &:nth-child(3n+1) {
+        margin-left: 15px;
+      }
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.destinations-list .component-trip-card {
+  @media (min-width: $screen-lg-min) {
+    max-width: 294px;
+  }
+}

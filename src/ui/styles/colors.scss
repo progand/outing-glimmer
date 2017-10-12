@@ -1,0 +1,36 @@
+$navbar-blue: #4389bb;
+$dropdown-blue: #428abc;
+$lightblue-text: #4490DE;
+$lighterblue-text: #4c99cE;
+
+$grey-text: #4A4A4A;
+$main-grey: #979797;
+$lightgrey: #9B9B9B;
+$palegrey: #CCCCCC;
+
+$red: #cc2539;
+$green: #5D9E12;
+$yellow: #f5be23;
+
+.-grey {
+	color: $lightgrey;
+}
+.-red-background {
+	background: $red;
+}
+.-red {
+	color: $red;
+}
+.-green-background {
+	background: $green;
+}
+.-green {
+	color: $green;
+}
+
+.-yellow-background {
+	background: $yellow;
+}
+.-yellow {
+	color: $yellow;
+}
