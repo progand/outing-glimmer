@@ -1,8 +1,10 @@
 import Component, { tracked } from "@glimmer/component";
 
 export default class TripsList extends Component {
-    @tracked trips: Array<Object>;
+    @tracked categorisedTrips: Array<any>;
     @tracked isLoading = true;
+    // number of trips to show in each category by default
+    maxTripsOnLoad: 6;
 
     didInsertElement() {
         this.loadTrips();
@@ -12,7 +14,8 @@ export default class TripsList extends Component {
         this.isLoading = true;
         const res = await fetch(`https://cn.outingtravel.com/models/trips?action=includeRelationships`);
         const data = await res.json();
-        this.trips = this.deserialize(data);
+        const trips = this.deserialize(data);
+        this.categorisedTrips = this.calculateCategorisedTrips(trips);
         this.isLoading = false;
     }
 
@@ -39,5 +42,46 @@ export default class TripsList extends Component {
 
     getByValue(collection, fieldValue, fieldName = 'id') {
         return collection.find(item => item[fieldName] === fieldValue);
+    }
+
+    calculateCategorisedTrips(trips = []) {
+        return trips
+            .sort((trip1, trip2) => trip1.order > trip2.order ? -1 : 1)
+            .reduce((result, trip) => {
+                const isTripFinished = Date.parse(trip.dateEnd) < Date.now() || trip.status === 'finished';
+                const may12 = new Date(2017, 4, 12);
+                if (String(trip.name).startsWith('AIESEC')) {
+                    result[0].items.push(trip);
+                } else if (!isTripFinished && Date.parse(trip.dateEnd) < may12.getTime()) {
+                    result[1].items.push(trip);
+                } else if (!isTripFinished && Date.parse(trip.dateEnd) >= may12.getTime()) {
+                    result[2].items.push(trip);
+                } else if (isTripFinished) {
+                    result[3].items.push(trip);
+                }
+                return result;
+            }, [
+                { headingTranslationKey: 'AIESEC Volunteering', items: [] },
+                { headingTranslationKey: 'Weekend Outings', items: [] },
+                { headingTranslationKey: 'Vacation Journeys', items: [] },
+                { headingTranslationKey: 'Finished Trips', items: [] }
+            ])
+            .map(category => {
+                return {
+                    ...category,
+                    visibleItems: category.items.slice(0, 6),
+                    hasMore: category.items.length > 6
+                };
+            });
+    }
+
+
+    showMore(category) {
+        const updatedCategory = {
+            ...category,
+            visibleItems: category.items.slice(0, category.visibleItems.length + 6)
+        }
+        //replace category
+        this.categorisedTrips = this.categorisedTrips.splice(this.categorisedTrips.indexOf(category), 1, updatedCategory);
     }
 };
