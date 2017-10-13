@@ -77,11 +77,20 @@ export default class TripsList extends Component {
 
 
     showMore(category) {
+        const categoryIndex = this.categorisedTrips.indexOf(category);
+        const visibleItems = category.items.slice(0, category.visibleItems.length + 6);
+        const hasMore = category.items.length > visibleItems.length
         const updatedCategory = {
             ...category,
-            visibleItems: category.items.slice(0, category.visibleItems.length + 6)
+            visibleItems,
+            hasMore
         }
         //replace category
-        this.categorisedTrips = this.categorisedTrips.splice(this.categorisedTrips.indexOf(category), 1, updatedCategory);
+        this.categorisedTrips = [
+            ...this.categorisedTrips.slice(0, categoryIndex),
+            updatedCategory,
+            ...this.categorisedTrips.slice(categoryIndex+1)
+        ];
+        console.log(this.categorisedTrips);
     }
 };
