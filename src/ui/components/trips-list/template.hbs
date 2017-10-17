@@ -1,24 +1,11 @@
 <h1 class="text-center text-primary">OutingTravel</h1>
 <article class="container">
-    {{#if isLoading}}
+    {{#if state.isLoading}}
     <div class="text-center text-muted">loading...</div>{{else}}
 
     <div>
-        {{#each categorisedTrips key="@index" as |category|}} {{#if category.items.length}}
-        <p class='featured-title'>{{category.headingTranslationKey}}</p>
-        <div class="row normal-itinetaries">
-            {{#each category.visibleItems key="@index1" as |trip|}}
-            <trip-item @trip={{trip}} /> {{else}}
-            <div class="text-center">{{t "home.adventures.no-results"}}</div>
-            {{/each}} {{#if category.hasMore}}
-            <div class="text-center clearfix">
-                <button class="btn btn-link text-uppercase" onclick={{action showMore category}}>
-                    <strong>LOAD MORE</strong>
-                </button>
-            </div>
-            {{/if}}
-        </div>
-        {{/if}} {{/each}}
+        {{#each state.categorisedTrips key="@index" as |category|}}
+        <trips-block @items={{category.items}} @headingTranslationKey={{category.headingTranslationKey}} /> {{/each}}
     </div>
     {{/if}}
 </article>

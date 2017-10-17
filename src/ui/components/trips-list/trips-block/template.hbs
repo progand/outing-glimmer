@@ -1,0 +1,17 @@
+<div>
+    <p class='featured-title'>{{@headingTranslationKey}}</p>
+    <div class="row normal-itinetaries">
+        {{#each visibleItems key="@index" as |trip|}}
+        <trip-item @trip={{trip}} /> {{else}}
+        <div class="text-center">No results</div>
+        {{/each}}
+
+        <div class="container text-center clearfix">
+            {{#if hasMore}}
+            <button class="btn btn-link text-uppercase" onclick={{action showMore}}>
+                <strong>LOAD MORE</strong>
+            </button>
+            {{/if}}
+        </div>
+    </div>
+</div>

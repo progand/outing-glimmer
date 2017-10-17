@@ -1,22 +1,29 @@
 import Component, { tracked } from "@glimmer/component";
 
 export default class TripsList extends Component {
-    @tracked categorisedTrips: Array<any>;
-    @tracked isLoading = true;
-    // number of trips to show in each category by default
-    maxTripsOnLoad: 6;
+    @tracked state = {
+        categorisedTrips: [],
+        isLoading: true
+    };
+    
 
     didInsertElement() {
         this.loadTrips();
     }
 
     async loadTrips() {
-        this.isLoading = true;
+        this.state = {
+            ...this.state,
+            isLoading: true
+        }
         const res = await fetch(`https://cn.outingtravel.com/models/trips?action=includeRelationships`);
         const data = await res.json();
         const trips = this.deserialize(data);
-        this.categorisedTrips = this.calculateCategorisedTrips(trips);
-        this.isLoading = false;
+        this.state = {
+            ...this.state,
+            categorisedTrips: this.calculateCategorisedTrips(trips),
+            isLoading: false
+        }
     }
 
     deserialize(data: any) {
@@ -73,24 +80,5 @@ export default class TripsList extends Component {
                     hasMore: category.items.length > 6
                 };
             });
-    }
-
-
-    showMore(category) {
-        const categoryIndex = this.categorisedTrips.indexOf(category);
-        const visibleItems = category.items.slice(0, category.visibleItems.length + 6);
-        const hasMore = category.items.length > visibleItems.length
-        const updatedCategory = {
-            ...category,
-            visibleItems,
-            hasMore
-        }
-        //replace category
-        this.categorisedTrips = [
-            ...this.categorisedTrips.slice(0, categoryIndex),
-            updatedCategory,
-            ...this.categorisedTrips.slice(categoryIndex+1)
-        ];
-        console.log(this.categorisedTrips);
     }
 };
